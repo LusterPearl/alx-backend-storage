@@ -1,0 +1,2 @@
+// Insert a document in the school collwction
+echo 'db.school.insert0ne({name: "Holberton school"})' | mongo $1

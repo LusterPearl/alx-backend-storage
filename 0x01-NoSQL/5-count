@@ -1,0 +1,2 @@
+// Display the number of documents in the school collection
+echo 'db.school.count()' | mongo $1

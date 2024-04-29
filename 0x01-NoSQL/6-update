@@ -1,0 +1,2 @@
+// Update documents in the school collection with the name holberton
+echo 'db.school.updateMany({name: "holberton school"}, {$set: {address: "972 Mission street"}})' | mongo $1

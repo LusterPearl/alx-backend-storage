@@ -1,0 +1,2 @@
+// Delete all documents in the school collection with name holberton school
+echo 'db.school.deleteMany({name: "Holberton school"})' | mongo $1
