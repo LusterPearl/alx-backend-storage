@@ -1,0 +1,8 @@
+// find all name starting with holbertion in the school collection
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 my_db"
+    exit 1
+fi
+
+mongo $1 --eval 'db.school.find({"name": /^Holberton/}, {"_id": 1, "name": 1}).forEach(printjson)'
