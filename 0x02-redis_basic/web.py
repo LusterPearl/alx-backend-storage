@@ -12,14 +12,13 @@ import time
 """Connect to Redis"""
 redis_client = redis.Redis()
 
+
 def get_page(url: str) -> str:
     """
     Fetches the HTML content of a given URL and caches it with an
     expiration time of 10 seconds.
-    
     Args:
         url (str): The URL to fetch the content from.
-    
     Returns:
         str: The HTML content of the URL.
     """

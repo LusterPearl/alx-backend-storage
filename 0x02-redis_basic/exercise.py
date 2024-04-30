@@ -9,8 +9,10 @@ import uuid
 from typing import Callable, Union
 from functools import wraps
 
+
 class Cache:
     def __init__(self):
+        """init self, count redis"""
         self._redis = redis.Redis()
         self._redis.flushdb()
 
