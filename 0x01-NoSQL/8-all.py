@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-""" 8-all """
-from pymongo.collection import Collection
+""" list all doucments """
 
 
 def list_all(mongo_collection):
