@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """ 10-update_topics """
-from pymongo.collection import Collection
 
 
 def update_topics(mongo_collection, name, topics):
