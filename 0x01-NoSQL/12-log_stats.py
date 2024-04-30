@@ -16,5 +16,11 @@ if __name__ == "__main__":
         count = collection.count_documents({"method": method})
         print("    method {}: {}".format(method, count))
 
+<<<<<<< HEAD
     status_check = collection.count_documents({"method": "GET", "path": "/status"})
     print("{} status check".format(status_check))
+=======
+    query = {"method": "GET", "path": "/status"}
+    status_check = collection.count_documents(query)
+    print("{} status check".format(status_check))
+>>>>>>> 2f0dda68ec4cb38429b65ef8d663f3b13b817876

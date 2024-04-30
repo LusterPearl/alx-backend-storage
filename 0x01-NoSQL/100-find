@@ -1,2 +1,2 @@
-// Find all name starting with holbertion
-echo 'db.school.find({"name": /^Holberton/i})' | mongo my_db
+// lists all documents with name
+db.school.find({ name: /^Holberton/i })
