@@ -15,4 +15,4 @@ def update_topics(mongo_collection: Collection, name: str, topics: list) -> None
     mongo_collection.update_many(
         {"name": name},
         {"$set": {"topics": topics}}
-    )
+        )

@@ -35,4 +35,4 @@ if __name__ == "__main__":
     for idx, (ip, count) in enumerate(sorted_ips.items()):
         if idx >= 10:
             break
-    print(f"\t{ip}: {count}")
+        print(f"\t{ip}: {count}")

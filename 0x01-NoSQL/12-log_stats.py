@@ -2,6 +2,7 @@
 """ 12-log_stats """
 from pymongo import MongoClient
 
+
 def log_stats():
     """
     Provide stats about Nginx logs stored in MongoDB.
@@ -23,4 +24,4 @@ def log_stats():
     print("Methods:")
     for method, count in method_counts.items():
         print("    method {}: {}".format(method, count))
-    print("{} status check".format(status_check_count))
+        print("{} status check".format(status_check_count))

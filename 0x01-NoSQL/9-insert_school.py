@@ -6,7 +6,6 @@ from pymongo.collection import Collection
 def insert_school(mongo_collection, **kwargs) -> str:
     """
     Insert a new document in the collection based on kwargs.
-    
     Args:
         mongo_collections: pymongo collection object
         **kwargs: Keyword arguments for the new document
