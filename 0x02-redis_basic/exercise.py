@@ -65,12 +65,15 @@ class Cache:
         inputs = cls._redis.lrange(inputs_key, 0, -1)
         outputs = cls._redis.lrange(outputs_key, 0, -1)
 
-        print("{} was called {} times:".format(method.__qualname__, len(inputs)))
-
+        print("{} was called {} times:".format(
+            method.__qualname__, len(inputs)))
+        
         for inp, out in zip(inputs, outputs):
-            print("{}(*{}) -> {}".format(method.__qualname__, inp.decode(), out.decode()))
-
-    def get(self, key: str, fn: Callable = None) -> Union[str, bytes, int, float]:
+            print("{}(*{}) -> {}".format(
+                method.__qualname__, inp.decode(), out.decode()))
+            
+    def get(self, key: str, fn: Callable = None) -> Union[
+        str, bytes, int, float]:
         """SELF, key, float, string"""
         data = self._redis.get(key)
         if data is None:
