@@ -3,7 +3,7 @@
 from pymongo.collection import Collection
 
 
-def schools_by_topic(mongo_collection: Collection, topic: str) -> list:
+def schools_by_topic(mongo_collection, topic):
     """
     Return the list of schools having a specific topic.
 
@@ -14,5 +14,4 @@ def schools_by_topic(mongo_collection: Collection, topic: str) -> list:
     Returns:
         List of schools having the specified topic.
     """
-    schools = mongo_collection.find({"topics: topic"})
-    return list(schools)
+    return list(mongo_collection.find({"topics": topic}))

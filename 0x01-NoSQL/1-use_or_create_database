@@ -1,2 +1,2 @@
 // create or use the database my_db
-echo 'use my_db' | mongo
+use my_db

@@ -3,7 +3,7 @@
 from pymongo.collection import Collection
 
 
-def insert_school(mongo_collection, **kwargs) -> str:
+def insert_school(mongo_collection, **kwargs):
     """
     Insert a new document in the collection based on kwargs.
     Args:
@@ -13,5 +13,4 @@ def insert_school(mongo_collection, **kwargs) -> str:
     Returns:
         The new _id of the inserted document
     """
-    new_document = mongo_collection.insert_one(kwargs)
-    return str(new_document.inserted_id)
+    return mongo_collection.insert_one(kwargs).inserted_id

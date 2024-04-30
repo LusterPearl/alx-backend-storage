@@ -3,7 +3,7 @@
 from pymongo.collection import Collection
 
 
-def list_all(mongo_collection: Collection) -> list:
+def list_all(mongo_collection):
     """
     List all documents in a collection
 
@@ -14,7 +14,4 @@ def list_all(mongo_collection: Collection) -> list:
     Returns:
     List of documents in the collection.
     """
-    documents = []
-    for doc in mongo_collection.find():
-        documents.append(doc)
-        return documents
+    return list(mongo_collection.find())
