@@ -34,7 +34,6 @@ class Cache:
         return method(self, *args, **kwargs)
         return wrapper
 
-
     @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """Union string, int , float"""
