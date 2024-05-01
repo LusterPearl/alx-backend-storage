@@ -3,15 +3,17 @@
 Module for implementing an expiring web cache and trackers
 using Redis.
 """
+
 import requests
 import redis
-from functools import wraps
-from typing import Callable
-
-cache = redis.Redis()
+import time
 
 
-def counter(method: Callable) -> Callable:
+"""Connect to Redis"""
+redis_client = redis.Redis()
+
+
+def get_page(url: str) -> str:
     """
     Fetches the HTML content of a given URL and caches it with an
     expiration time of 10 seconds.
@@ -20,23 +22,19 @@ def counter(method: Callable) -> Callable:
     Returns:
         str: The HTML content of the URL.
     """
-    @wraps(method)
-    def wrapper(url) -> str:
-        """ function wrapper """
-        count_key = f"count:{url}"
-        print(count_key)
-        result_key = f"result:{url}"
-        cache.incr(count_key)
-        result = cache.get(result_key)
-        if result:
-            return result.decode('utf8')
-        result = method(url)
-        cache.set(count_key, 0)
-        cache.setex(result_key, 10, result)
-        return result
-    return wrapper
+    url_count_key = f"count:{url}"
+    redis_client.incr(url_count_key)
 
-@counter
-def get_page(url: str) -> str:
-    """ get a url response """
-    return requests.get(url)
+    """Cache the result with an expiration time of 10 seconds"""
+    cache_key = f"cache:{url}"
+    cached_content = redis_client.get(cache_key)
+    if cached_content:
+        return cached_content.decode()
+
+    response = requests.get(url)
+    if response.status_code == 200:
+        content = response.text
+        redis_client.setex(cache_key, 10, content)
+        return content
+    else:
+        return f"Failed to fetch URL: {url}"
