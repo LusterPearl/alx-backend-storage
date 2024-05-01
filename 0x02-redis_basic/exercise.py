@@ -48,7 +48,8 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self, key: str, fn: Callable = None) -> Union[str, bytes, int, float]:
+    def get(self, key: str, fn: Callable = None) -> Union[
+            str, bytes, int, float]:
         """Retrieve data from Redis and optionally"""
         data = self._redis.get(key)
         if data is None:
@@ -71,4 +72,4 @@ class Cache:
 
         for inp, out in zip(inputs, outputs):
             print("{}(*{}) -> {}".format(
-                method.__qualname__, inp.decode(), out.decode()))
+                  method.__qualname__, inp.decode(), out.decode()))
