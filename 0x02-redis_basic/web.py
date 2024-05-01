@@ -7,34 +7,28 @@ using Redis.
 import requests
 import redis
 import time
+from functools import wraps
 
 
-"""Connect to Redis"""
-redis_client = redis.Redis()
+r = redis.Redis(host='localhost', port=6379, db=0)
 
 
-def get_page(url: str) -> str:
-    """
-    Fetches the HTML content of a given URL and caches it with an
-    expiration time of 10 seconds.
-    Args:
-        url (str): The URL to fetch the content from.
-    Returns:
-        str: The HTML content of the URL.
-    """
-    url_count_key = f"count:{url}"
-    redis_client.incr(url_count_key)
+def track_access(url):
+    """Increment the access count for a given URL."""
+    r.incr(f"count:{url}")
 
-    """Cache the result with an expiration time of 10 seconds"""
-    cache_key = f"cache:{url}"
-    cached_content = redis_client.get(cache_key)
+def get_page(url):
+    """Retrieve the HTML content of a URL, track access count, and cache with expiration."""
+
+    cached_content = r.get(url)
     if cached_content:
-        return cached_content.decode()
-
+        return cached_content.decode('utf-8')
+    
     response = requests.get(url)
-    if response.status_code == 200:
-        content = response.text
-        redis_client.setex(cache_key, 10, content)
-        return content
-    else:
-        return f"Failed to fetch URL: {url}"
+    page_content = response.text
+
+    track_access(url)
+
+    r.setex(url, 10, page_content)
+
+    return page_content
