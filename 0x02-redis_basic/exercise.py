@@ -32,7 +32,7 @@ class Cache:
         key = method.__qualname__
         self._redis.incr(key)
         return method(self, *args, **kwargs)
-    return wrapper
+        return wrapper
 
 
     @count_calls
