@@ -3,11 +3,10 @@
 Module for Cache class to interact with Redis
 """
 
-
-import redis
-import uuid
 from typing import Callable, Union
 from functools import wraps
+import redis
+import uuid
 
 
 class Cache:
@@ -21,17 +20,17 @@ class Cache:
         """
         Store data in Redis using a randomly generated key
 
-    Args:
-        data (Union[str, bytes, int, float]): The data to store
+        Args:
+            data (Union[str, bytes, int, float]): The data to store
 
-    Returns:
-        str: The key under which the data is stored
+        Returns:
+            str: The key under which the data is stored
         """
-    @wraps(method)
-    def wrapper(self, *args, **kwargs):
-        key = method.__qualname__
-        self._redis.incr(key)
-        return method(self, *args, **kwargs)
+        @wraps(method)
+        def wrapper(self, *args, **kwargs):
+            key = method.__qualname__
+            self._redis.incr(key)
+            return method(self, *args, **kwargs)
         return wrapper
 
     @count_calls
