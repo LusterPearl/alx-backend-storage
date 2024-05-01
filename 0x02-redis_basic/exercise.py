@@ -8,14 +8,12 @@ from functools import wraps
 import redis
 import uuid
 
-
 class Cache:
     def __init__(self):
         """init self, count redis"""
         self._redis = redis.Redis()
         self._redis.flushdb()
 
-    @staticmethod
     def count_calls(method: Callable) -> Callable:
         """
         Store data in Redis using a randomly generated key
