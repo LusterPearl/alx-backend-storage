@@ -21,18 +21,19 @@ class Cache:
         """
         Store data in Redis using a randomly generated key
 
-        Args:
-            data (Union[str, bytes, int, float]): The data to store
+    Args:
+        data (Union[str, bytes, int, float]): The data to store
 
-        Returns:
-            str: The key under which the data is stored
+    Returns:
+        str: The key under which the data is stored
         """
-        @wraps(method)
-        def wrapper(self, *args, **kwargs):
-            key = method.__qualname__
-            self._redis.incr(key)
-            return method(self, *args, **kwargs)
-        return wrapper
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        key = method.__qualname__
+        self._redis.incr(key)
+        return method(self, *args, **kwargs)
+    return wrapper
+
 
     @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
