@@ -17,18 +17,17 @@ def track_access(url):
     """Increment the access count for a given URL."""
     r.incr(f"count:{url}")
 
+
 def get_page(url):
-    """Retrieve the HTML content of a URL, track access count, and cache with expiration."""
+    """Retrieve the HTML content of a URL, track access count"""
 
     cached_content = r.get(url)
     if cached_content:
         return cached_content.decode('utf-8')
-    
+
     response = requests.get(url)
     page_content = response.text
 
     track_access(url)
-
     r.setex(url, 10, page_content)
-
     return page_content
