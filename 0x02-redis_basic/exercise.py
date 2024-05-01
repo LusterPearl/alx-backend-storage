@@ -32,58 +32,35 @@ class Cache:
             return method(self, *args, **kwargs)
         return wrapper
 
-    @count_calls
-    def store(self, data: Union[str, bytes, int, float]) -> str:
-        """Union string, int , float"""
+    @call_history
+    def store(self, data: str) -> str:
+        """Store data in Redis using a randomly generated key"""
         key = str(uuid.uuid4())
         self._redis.set(key, data)
         return key
 
-    @staticmethod
-    def call_history(method: Callable) -> Callable:
-        """Callable list"""
-        @wraps(method)
-        def wrapper(self, *args, **kwargs):
-            inputs_key = "{}:inputs".format(method.__qualname__)
-            outputs_key = "{}:outputs".format(method.__qualname__)
+    def get_inputs(self, method_name: str):
+        """Retrieve the inputs for a method from Redis"""
+        inputs_key = "{}:inputs".format(method_name)
+        return self._redis.lrange(inputs_key, 0, -1)
 
-            self._redis.rpush(inputs_key, str(args))
-            output = method(self, *args, **kwargs)
-            self._redis.rpush(outputs_key, output)
+    def get_outputs(self, method_name: str):
+        """Retrieve the outputs for a method from Redis"""
+        outputs_key = "{}:outputs".format(method_name)
+        return self._redis.lrange(outputs_key, 0, -1)
+    
+    def replay(cache, method):
+        """Display the history of calls of a particular function"""
+    inputs = cache.get_inputs(method.__qualname__)
+    outputs = cache.get_outputs(method.__qualname__)
 
-            return output
-        return wrapper
+    print("{} was called {} times:".format(method.__qualname__, len(inputs)))
 
-    @classmethod
-    def replay(cls, method: Callable) -> None:
-        """Callable list"""
-        inputs_key = "{}:inputs".format(method.__qualname__)
-        outputs_key = "{}:outputs".format(method.__qualname__)
-
-        inputs = cls._redis.lrange(inputs_key, 0, -1)
-        outputs = cls._redis.lrange(outputs_key, 0, -1)
-
-        print("{} was called {} times:".format(
-            method.__qualname__, len(inputs)))
-
-        for inp, out in zip(inputs, outputs):
-            print("{}(*{}) -> {}".format(
-                method.__qualname__, inp.decode(), out.decode()))
-
-    def get(self, key: str, fn: Callable = None) -> Union[
-            str, bytes, int, float]:
-        """SELF, key, float, string"""
-        data = self._redis.get(key)
-        if data is None:
-            return None
-        if fn is not None:
-            return fn(data)
-        return data
-
-    def get_str(self, key: str) -> str:
-        """data (Union[str, bytes, int, float])"""
-        return self.get(key, fn=lambda d: d.decode("utf-8"))
-
-    def get_int(self, key: str) -> int:
-        """data (Union[str, bytes, int, float])"""
-        return self.get(key, fn=lambda d: int(d))
+    for inp, out in zip(inputs, outputs):
+        print(
+        "{}(*{}) -> {}".format(
+            method.__qualname__,
+            inp.decode(),
+            out.decode()
+        )
+    )
