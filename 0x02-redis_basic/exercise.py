@@ -8,6 +8,7 @@ from functools import wraps
 import redis
 import uuid
 
+
 class Cache:
     def __init__(self):
         """init self, count redis"""
