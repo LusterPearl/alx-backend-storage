@@ -1,2 +1,2 @@
 // lists all documents with name
-db.school.find({ name: /^Holberton/i })
+db.school.find({ name: /^holberton/i })
